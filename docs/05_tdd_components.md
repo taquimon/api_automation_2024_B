@@ -75,7 +75,7 @@ get_token()
 Create basic CRUD like projects example using a different API:
 - Authentication
 - Create (POST)
-- Rad (GET)
+- Read (GET)
 - Delete (DELETE)
 - Update
 - Cleanup
