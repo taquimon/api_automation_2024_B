@@ -12,45 +12,40 @@ class TestSections:
     @classmethod
     def setup_class(cls):
         """
-        Setup class for projects
+        Setup class for sections
         """
         cls.rest_client = RestClient()
         cls.url_todo_sections = f"{URL_TODO}/sections"
-        # response = cls.rest_client.request("get", cls.url_todo_sections)
-        # cls.section_id = response.json()[0]["id"]
-        # LOGGER.debug("Section ID: %s", cls.section_id)
-        cls.section_list = []
 
-    def test_get_all_sections(self):
+    def test_get_all_sections(self, log_test_names):
         """
         Test get all sections endpoint
         """
-        LOGGER.info("Test get all sections")
         response = self.rest_client.request("get", self.url_todo_sections)
 
         assert response.status_code == 200
 
-    def test_get_all_sections_by_project(self, create_project):
+    def test_get_all_sections_by_project(self, create_project, log_test_names):
         """
         Test get all section by project endpoint
         """
-        LOGGER.info("Test get all sections")
+        LOGGER.info("Test get all sections by project")
         url_get_all_sections_by_project = f"{self.url_todo_sections}?project_id={create_project}"
         response = self.rest_client.request("get", url_get_all_sections_by_project)
 
         assert response.status_code == 200
 
-    def test_get_section(self, create_section):
+    def test_get_section(self, create_section, log_test_names):
         """
-        Test get project endpoint
+        Test get section endpoint
         """
         LOGGER.info("Test get section")
-        url_get_project = f"{self.url_todo_sections}/{create_section}"
-        response = self.rest_client.request("get", url_get_project)
+        url_get_section = f"{self.url_todo_sections}/{create_section}"
+        response = self.rest_client.request("get", url_get_section)
 
         assert response.status_code == 200
 
-    def test_create_section(self, create_project):
+    def test_create_section(self, create_project, log_test_names):
         """
         Test create project
         """
@@ -60,12 +55,10 @@ class TestSections:
             "name": "Groceries"
         }
         response = self.rest_client.request("post", self.url_todo_sections, body=body_section)
-        if response.status_code == 200:
-            self.section_list.append(response.json()["id"])
 
         assert response.status_code == 200
 
-    def test_delete_section(self, create_section):
+    def test_delete_section(self, create_section, log_test_names):
         """
         Test delete project
         """
@@ -76,28 +69,13 @@ class TestSections:
 
         assert response.status_code == 204
 
-    def test_update_section(self, create_section):
+    def test_update_section(self, create_section, log_test_names):
         LOGGER.info("Test update section")
         url_update_section = f"{self.url_todo_sections}/{create_section}"
         body_update_section = {
             "name": "Updated section"
         }
         response = self.rest_client.request("post", url_update_section, body=body_update_section)
-        if response.status_code == 200:
-            self.section_list.append(response.json()["id"])
 
         assert response.status_code == 200
-    #
-    # @classmethod
-    # def teardown_class(cls):
-    #     """
-    #     PyTest teardown class
-    #     """
-    #     LOGGER.debug("Teardown class")
-    #     LOGGER.debug("Cleanup projects data")
-    #     for project_id in cls.project_list:
-    #         url_delete_project = f"{cls.url_todo_projects}/{project_id}"
-    #         response = cls.rest_client.request("delete", url_delete_project)
-    #         if response.status_code == 204:
-    #             LOGGER.info("project Id deleted : %s", project_id)
-    #
+

@@ -21,7 +21,7 @@ class TestProjects:
         LOGGER.debug("Project ID: %s", cls.project_id)
         cls.project_list = []
 
-    def test_get_all_projects(self):
+    def test_get_all_projects(self, log_test_names):
         """
         Test get all projects endpoint
         """
@@ -30,7 +30,7 @@ class TestProjects:
 
         assert response.status_code == 200
 
-    def test_get_project(self):
+    def test_get_project(self, log_test_names):
         """
         Test get project endpoint
         """
@@ -40,7 +40,7 @@ class TestProjects:
 
         assert response.status_code == 200
 
-    def test_create_project(self):
+    def test_create_project(self, log_test_names):
         """
         Test create project
         """
@@ -55,7 +55,7 @@ class TestProjects:
 
         assert response.status_code == 200
 
-    def test_delete_project(self, create_project):
+    def test_delete_project(self, create_project, log_test_names):
         """
         Test delete project
         """
@@ -66,7 +66,13 @@ class TestProjects:
 
         assert response.status_code == 204
 
-    def test_update_project(self, create_project):
+    def test_update_project(self, create_project, log_test_names):
+        """
+
+        :param create_project:
+        :param log_test_names:
+        :return:
+        """
         LOGGER.info("Test update project")
         url_delete_project = f"{self.url_todo_projects}/{create_project}"
         body_update_project = {
@@ -74,6 +80,7 @@ class TestProjects:
             "color": "orange",
             "is_favorite": True
         }
+        # call to endpoint:
         response = self.rest_client.request("post", url_delete_project, body=body_update_project)
         if response.status_code == 200:
             self.project_list.append(response.json()["id"])
