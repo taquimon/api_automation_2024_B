@@ -21,8 +21,8 @@ def create_project():
     }
     url_todo_projects = f"{URL_TODO}/projects"
     response = rest_client.request("post", url_todo_projects, body=body_project)
-    if response.status_code == 200:
-        project_id = response.json()["id"]
+    if response["status_code"] == 200:
+        project_id = response["body"]["id"]
 
     yield project_id
     LOGGER.debug("Yield fixture delete project")
@@ -58,7 +58,7 @@ def create_task():
     url_todo_tasks = f"{URL_TODO}/tasks"
     rest_client = RestClient()
     response = rest_client.request("post", url_todo_tasks, body=body_task)
-    if response.status_code == 200:
+    if response["status_code"] == 200:
         task_id = response.json()["id"]
     yield task_id
     # delete task
@@ -70,7 +70,7 @@ def delete_project(project_id, rest_client):
     LOGGER.debug("Cleanup project")
     url_delete_project = f"{URL_TODO}/projects/{project_id}"
     response = rest_client.request("delete", url_delete_project)
-    if response.status_code == 204:
+    if response["status_code"] == 204:
         LOGGER.info("project Id deleted : %s", project_id)
 
 
@@ -81,6 +81,7 @@ def delete_task(task_id, rest_client):
     response = rest_client.request("delete", url_delete_task)
     if response.status_code == 204:
         LOGGER.info("Task Id deleted : %s", task_id)
+
 
 @pytest.fixture()
 def log_test_names(request):

@@ -1,8 +1,10 @@
 import logging
 
+import pytest
 
-from config.config import URL_TODO
+from config.config import URL_TODO, MAX_PROJECTS
 from helpers.rest_client import RestClient
+from helpers.validate_response import ValidateResponse
 from utils.logger import get_logger
 
 LOGGER = get_logger(__name__, logging.DEBUG)
@@ -17,9 +19,10 @@ class TestProjects:
         cls.rest_client = RestClient()
         cls.url_todo_projects = f"{URL_TODO}/projects"
         response = cls.rest_client.request("get", cls.url_todo_projects)
-        cls.project_id = response.json()[0]["id"]
+        cls.project_id = response["body"][0]["id"]
         LOGGER.debug("Project ID: %s", cls.project_id)
         cls.project_list = []
+        cls.validate = ValidateResponse()
 
     def test_get_all_projects(self, log_test_names):
         """
@@ -28,7 +31,7 @@ class TestProjects:
         LOGGER.info("Test get all projects")
         response = self.rest_client.request("get", self.url_todo_projects)
 
-        assert response.status_code == 200
+        self.validate.validate_response(response, "projects", "get_all_projects")
 
     def test_get_project(self, log_test_names):
         """
@@ -38,7 +41,7 @@ class TestProjects:
         url_get_project = f"{self.url_todo_projects}/{self.project_id}"
         response = self.rest_client.request("get", url_get_project)
 
-        assert response.status_code == 200
+        assert response["status_code"] == 200
 
     def test_create_project(self, log_test_names):
         """
@@ -50,10 +53,10 @@ class TestProjects:
             "color": "orange"
         }
         response = self.rest_client.request("post", self.url_todo_projects, body=body_project)
-        if response.status_code == 200:
-            self.project_list.append(response.json()["id"])
+        if response["status_code"] == 200:
+            self.project_list.append(response["body"]["id"])
 
-        assert response.status_code == 200
+        self.validate.validate_response(response, "projects", "create_project")
 
     def test_delete_project(self, create_project, log_test_names):
         """
@@ -64,7 +67,7 @@ class TestProjects:
         LOGGER.info("project Id to be deleted : %s", create_project)
         response = self.rest_client.request("delete", url_delete_project)
 
-        assert response.status_code == 204
+        self.validate.validate_response(response, "projects", "delete_project")
 
     def test_update_project(self, create_project, log_test_names):
         """
@@ -82,10 +85,32 @@ class TestProjects:
         }
         # call to endpoint:
         response = self.rest_client.request("post", url_delete_project, body=body_update_project)
-        if response.status_code == 200:
-            self.project_list.append(response.json()["id"])
+        if response["status_code"] == 200:
+            self.project_list.append(response["body"]["id"])
 
-        assert response.status_code == 200
+        self.validate.validate_response(response, "projects", "update_project")
+
+    @pytest.mark.functional
+    def test_max_number_projects(self,log_test_names):
+
+        response = self.rest_client.request("get", self.url_todo_projects)
+        number_of_projects = len(response["body"])
+        LOGGER.debug("Number of current projects: %s", number_of_projects)
+        for index in range(number_of_projects, MAX_PROJECTS):
+            body_project = {
+                "name": f"Project {index}",
+                "color": "orange"
+            }
+            response = self.rest_client.request("post", self.url_todo_projects, body=body_project)
+            self.project_list.append(response["body"]["id"])
+
+        body_project = {
+            "name": "Last Project",
+            "color": "orange"
+        }
+        response = self.rest_client.request("post", self.url_todo_projects, body=body_project)
+
+        self.validate.validate_response(response, "projects", "max_project")
 
     @classmethod
     def teardown_class(cls):
@@ -97,6 +122,6 @@ class TestProjects:
         for project_id in cls.project_list:
             url_delete_project = f"{cls.url_todo_projects}/{project_id}"
             response = cls.rest_client.request("delete", url_delete_project)
-            if response.status_code == 204:
+            if response["status_code"] == 204:
                 LOGGER.info("project Id deleted : %s", project_id)
 

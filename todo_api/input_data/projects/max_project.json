@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/projects"
+  },
+  "response": {
+    "body":
+        {
+            "msg": "Maximum number of projects per user limit reached"
+        }
+  },
+  "headers": {
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "status_code": 403
+}

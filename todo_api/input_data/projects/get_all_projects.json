@@ -1,0 +1,44 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/projects"
+  },
+  "response": {
+    "body":
+      [
+        {
+            "id": "2256527749",
+            "parent_id": null,
+            "order": 0,
+            "color": "grey",
+            "name": "Inbox",
+            "comment_count": 0,
+            "is_shared": false,
+            "is_favorite": false,
+            "is_inbox_project": true,
+            "is_team_inbox": false,
+            "url": "https://todoist.com/showProject?id=2256527749",
+            "view_style": "board"
+        },
+        {
+            "id": "2330843648",
+            "parent_id": null,
+            "order": 1,
+            "color": "orange",
+            "name": "Complete task C#",
+            "comment_count": 0,
+            "is_shared": false,
+            "is_favorite": false,
+            "is_inbox_project": false,
+            "is_team_inbox": false,
+            "url": "https://todoist.com/showProject?id=2330843648",
+            "view_style": "list"
+        }
+      ]
+  },
+  "headers": {
+    "Content-Type": "application/json",
+    "Transfer-Encoding": "chunked"
+  },
+  "status_code": 200
+}
