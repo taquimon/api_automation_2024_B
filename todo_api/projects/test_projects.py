@@ -4,6 +4,7 @@ import pytest
 
 from config.config import URL_TODO, MAX_PROJECTS
 from helpers.rest_client import RestClient
+from entities.project import Project
 from helpers.validate_response import ValidateResponse
 from utils.logger import get_logger
 
@@ -23,7 +24,9 @@ class TestProjects:
         LOGGER.debug("Project ID: %s", cls.project_id)
         cls.project_list = []
         cls.validate = ValidateResponse()
+        cls.project = Project()
 
+    @pytest.mark.acceptance
     def test_get_all_projects(self, log_test_names):
         """
         Test get all projects endpoint
@@ -33,6 +36,7 @@ class TestProjects:
 
         self.validate.validate_response(response, "projects", "get_all_projects")
 
+    @pytest.mark.acceptance
     def test_get_project(self, log_test_names):
         """
         Test get project endpoint
@@ -43,6 +47,7 @@ class TestProjects:
 
         assert response["status_code"] == 200
 
+    @pytest.mark.acceptance
     def test_create_project(self, log_test_names):
         """
         Test create project
@@ -58,6 +63,7 @@ class TestProjects:
 
         self.validate.validate_response(response, "projects", "create_project")
 
+    @pytest.mark.acceptance
     def test_delete_project(self, create_project, log_test_names):
         """
         Test delete project
@@ -69,6 +75,7 @@ class TestProjects:
 
         self.validate.validate_response(response, "projects", "delete_project")
 
+    @pytest.mark.acceptance
     def test_update_project(self, create_project, log_test_names):
         """
 
@@ -101,15 +108,12 @@ class TestProjects:
                 "name": f"Project {index}",
                 "color": "orange"
             }
-            response = self.rest_client.request("post", self.url_todo_projects, body=body_project)
+
+            response, _ = self.project.create_project(body=body_project)
             self.project_list.append(response["body"]["id"])
 
-        body_project = {
-            "name": "Last Project",
-            "color": "orange"
-        }
-        response = self.rest_client.request("post", self.url_todo_projects, body=body_project)
-
+        # try to create last project
+        response, _ = self.project.create_project()
         self.validate.validate_response(response, "projects", "max_project")
 
     @classmethod

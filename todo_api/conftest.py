@@ -1,9 +1,9 @@
 import logging
 
 import pytest
-import requests
 
 from config.config import URL_TODO
+from entities.project import Project
 from helpers.rest_client import RestClient
 from utils.logger import get_logger
 
@@ -13,20 +13,16 @@ LOGGER = get_logger(__name__, logging.DEBUG)
 @pytest.fixture()
 def create_project():
     project_id = None
-    rest_client = RestClient()
+
     LOGGER.info("Fixture create project")
-    body_project = {
-        "name": "Project from Fixture",
-        "color": "orange"
-    }
-    url_todo_projects = f"{URL_TODO}/projects"
-    response = rest_client.request("post", url_todo_projects, body=body_project)
+    project = Project()
+    response, rest_client = project.create_project()
     if response["status_code"] == 200:
         project_id = response["body"]["id"]
 
     yield project_id
     LOGGER.debug("Yield fixture delete project")
-    delete_project(project_id, rest_client)
+    delete_project(project_id, project)
 
 
 @pytest.fixture()
@@ -40,8 +36,8 @@ def create_section(create_project):
     url_todo_sections = f"{URL_TODO}/sections"
     rest_client = RestClient()
     response = rest_client.request("post", url_todo_sections, body=body_section)
-    if response.status_code == 200:
-        section_id = response.json()["id"]
+    if response["status_code"] == 200:
+        section_id = response["body"]["id"]
     return section_id
 
 
@@ -65,13 +61,8 @@ def create_task():
     delete_task(task_id, rest_client)
 
 
-def delete_project(project_id, rest_client):
-
-    LOGGER.debug("Cleanup project")
-    url_delete_project = f"{URL_TODO}/projects/{project_id}"
-    response = rest_client.request("delete", url_delete_project)
-    if response["status_code"] == 204:
-        LOGGER.info("project Id deleted : %s", project_id)
+def delete_project(project_id, project):
+    project.delete_project(project_id)
 
 
 def delete_task(task_id, rest_client):
