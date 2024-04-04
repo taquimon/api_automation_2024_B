@@ -2,3 +2,9 @@ pytest==8.0.2
 nose2==0.14.1
 requests==2.31.0
 python-dotenv==1.0.1
+hvac~=2.1.0
+pymsteams~=0.2.2
+fastapi~=0.110.0
+passlib~=1.7.4
+pydantic~=2.6.4
+behave~=1.2.6

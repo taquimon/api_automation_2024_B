@@ -4,6 +4,7 @@ import os
 load_dotenv()
 
 token_todo_api = os.getenv("token")
+WEB_HOOK = os.getenv("WEB_HOOK")
 
 URL_TODO = "https://api.todoist.com/rest/v2"
 HEADERS_TODO = {
