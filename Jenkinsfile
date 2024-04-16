@@ -23,7 +23,7 @@ pipeline {
                         jdk:'',
                         properties: [],
                         reportBuildPolicy: 'ALWAYS',
-                        results: [[path: 'allure-results']]
+                        results: [[path: 'reports/allure']]
                     ])
                  }
             }
