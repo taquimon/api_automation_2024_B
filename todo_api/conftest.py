@@ -10,8 +10,8 @@ from utils.logger import get_logger
 LOGGER = get_logger(__name__, logging.DEBUG)
 
 
-@pytest.fixture()
-def create_project():
+@pytest.fixture(name="create_project")
+def create_project_fixture():
     project_id = None
 
     LOGGER.info("Fixture create project")

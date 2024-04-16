@@ -110,6 +110,16 @@ RUN . env/bin/activate
 RUN python3 -m pip install -r requirements.txt
 ```
 
+command to build
+```shell
+docker build -t auto_framework .
+```
+
+command to run
+```shell
+docker run -ti auto_framework bash	
+```
+
 ## GitLab
 
 ```yaml
