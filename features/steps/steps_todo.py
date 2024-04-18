@@ -1,24 +1,43 @@
+"""
+(c) Copyright Jalasoft. 2024
+
+steps_todo.py
+    file contains all steps definitions for feature files
+"""
 import json
 import logging
 
+from behave import when, then
 from utils.logger import get_logger
-from behave import given, when, then, step
+
 
 LOGGER = get_logger(__name__, logging.DEBUG)
 
 
-@when(u'I call to "{endpoint}" endpoint using "GET" option and with parameters')
-def step_impl(context, endpoint):
-    LOGGER.debug(f"STEP: When I call to '{endpoint}' endpoint using 'GET' option and with parameters")
+@when('I call to "{endpoint}" endpoint using "GET" option and with parameters')
+def step_call_get_endpoint(context, endpoint):
+    """
+    step to call get endpoint
+    :param context:
+    :param endpoint:
+    """
+    LOGGER.debug("STEP: When I call to '%s' endpoint using 'GET' "
+                 "option and with parameters", endpoint)
     url_endpoint = get_url_by_feature(context, endpoint)
     response = context.rest_client.request("get", url_endpoint)
     context.response = response
     context.endpoint = endpoint
 
 
-@when(u'I call to "{endpoint}" endpoint using "POST" option and with parameters')
-def step_impl(context, endpoint):
-    LOGGER.debug(u'STEP: When I call to "sections" endpoint using "POST" option and with parameters')
+@when('I call to "{endpoint}" endpoint using "POST" option and with parameters')
+def step_call_post_endpoint(context, endpoint):
+    """
+    Step to call post endpoint
+    :param context:
+    :param endpoint:
+    """
+    LOGGER.debug('STEP: When I call to "%s" endpoint using "POST" '
+                 'option and with parameters', endpoint)
     url_endpoint = get_url_by_feature(context, endpoint)
     body_endpoint = {}
     if context.text:
@@ -38,9 +57,15 @@ def step_impl(context, endpoint):
     context.endpoint = endpoint
 
 
-@when(u'I call to "{endpoint}" endpoint using "DELETE" option and with parameters')
-def step_impl(context, endpoint):
-    LOGGER.debug(u'STEP: When I call to "projects" endpoint using "DELETE" option and with parameters')
+@when('I call to "{endpoint}" endpoint using "DELETE" option and with parameters')
+def step_call_delete_endpoint(context, endpoint):
+    """
+    Step to call delete endpoint
+    :param context:
+    :param endpoint:
+    """
+    LOGGER.debug('STEP: When I call to "%s" endpoint using "DELETE" '
+                 'option and with parameters', endpoint)
 
     url_delete_project = get_url_by_feature(context, endpoint, resource_id=True)
     response = context.rest_client.request("delete", url_delete_project)
@@ -48,20 +73,37 @@ def step_impl(context, endpoint):
     context.endpoint = endpoint
 
 
-@then(u'I receive the response and validate with "{json_file}" file')
-def step_impl(context, json_file):
-    LOGGER.debug(u'STEP: Then I receive the response and validate')
+@then('I receive the response and validate with "{json_file}" file')
+def step_receive_response(context, json_file):
+    """
+    Step to receive response
+    :param context:
+    :param json_file:
+    """
+    LOGGER.debug('STEP: Then I receive the response and validate')
     context.validate.validate_response(context.response, context.endpoint, json_file)
 
 
-@then(u'I validate the status code is {status_code:d}')
-def step_impl(context, status_code):
-    LOGGER.debug(f"STEP: Then I validate the status code is {status_code}")
+@then('I validate the status code is {status_code:d}')
+def step_validate_status_code(context, status_code):
+    """
+    Step to validate the status code
+    :param context:
+    :param status_code:
+    """
+    LOGGER.debug("STEP: Then I validate the status code is %s", status_code)
     assert context.response["status_code"] == status_code, \
         f"Expected {status_code} but received {context.response['status_code']}"
 
 
 def get_url_by_feature(context, endpoint, resource_id=False):
+    """
+
+    :param context:
+    :param endpoint:
+    :param resource_id:
+    :return:
+    """
     url = None
     if endpoint == "projects":
         if resource_id:
@@ -82,6 +124,12 @@ def get_url_by_feature(context, endpoint, resource_id=False):
 
 
 def update_json_param(context, json_data):
+    """
+
+    :param context:
+    :param json_data:
+    :return:
+    """
     keys = ["project_id", "section_id", "task_id"]
     for k in keys:
         for d in json_data.keys():

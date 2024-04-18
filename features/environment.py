@@ -1,3 +1,9 @@
+"""
+(c) Copyright Jalasoft 2024
+
+environment.py
+    file contains all environment functions/fixtures to be used by features
+"""
 import logging
 
 from config.config import URL_TODO
@@ -31,13 +37,13 @@ def before_all(context):
     context.project = Project()
 
 
-def before_feature(context, feature):
-    """
-
-    :param context:
-    :param feature:
-    """
-    LOGGER.info("Before feature")
+# def before_feature(context, feature):
+#     """
+#
+#     :param context:
+#     :param feature:
+#     """
+#     LOGGER.info("Before feature")
 
 
 def before_scenario(context, scenario):
@@ -67,7 +73,7 @@ def after_scenario(context, scenario):
     :param context:
     :param scenario:
     """
-    LOGGER.info("After scenario")
+    LOGGER.info("After scenario: %s", scenario.name)
     for resource in context.resource_list:
         for resource_id in context.resource_list[resource]:
             url_delete_project = f"{URL_TODO}/{resource}/{resource_id}"
@@ -77,19 +83,18 @@ def after_scenario(context, scenario):
                 LOGGER.info("%s Id deleted : %s", resource, resource_id)
 
 
-def after_feature(context, feature):
-    """
+# def after_feature(context, feature):
+#     """
+#
+#     :param context:
+#     :param feature:
+#     """
+#     LOGGER.info("After feature")
 
-    :param context:
-    :param feature:
-    """
-    LOGGER.info("After feature")
 
-
-def after_all(context):
-    """
-
-    :param context:
-    """
-    LOGGER.info("After all")
-
+# def after_all(context):
+#     """
+#
+#     :param context:
+#     """
+#     LOGGER.info("After all")

@@ -1,3 +1,9 @@
+"""
+(c) Copyright Jalasoft. 2024
+
+conftest.py
+    configuration tes file to locate fixtures
+"""
 import logging
 
 import pytest
@@ -12,11 +18,15 @@ LOGGER = get_logger(__name__, logging.DEBUG)
 
 @pytest.fixture(name="create_project")
 def create_project_fixture():
+    """
+    Fixture to create a project
+    :return:
+    """
     project_id = None
 
     LOGGER.info("Fixture create project")
     project = Project()
-    response, rest_client = project.create_project()
+    response = project.create_project()
     if response["status_code"] == 200:
         project_id = response["body"]["id"]
 
@@ -25,8 +35,12 @@ def create_project_fixture():
     delete_project(project_id, project)
 
 
-@pytest.fixture()
-def create_section(create_project):
+@pytest.fixture(name="create_section")
+def create_section_fixture(create_project):
+    """
+    Fixture to create section
+    :param create_project:
+    """
     section_id = None
     LOGGER.info("Test create section")
     body_section = {
@@ -41,8 +55,11 @@ def create_section(create_project):
     return section_id
 
 
-@pytest.fixture()
-def create_task():
+@pytest.fixture(name="create_task")
+def create_task_fixture():
+    """
+    Fixture to create a task
+    """
     task_id = None
     LOGGER.info("Fixture create task")
     body_task = {
@@ -55,27 +72,41 @@ def create_task():
     rest_client = RestClient()
     response = rest_client.request("post", url_todo_tasks, body=body_task)
     if response["status_code"] == 200:
-        task_id = response.json()["id"]
+        task_id = response["body"]["id"]
     yield task_id
     # delete task
     delete_task(task_id, rest_client)
 
 
 def delete_project(project_id, project):
+    """
+    Method to delete a project
+    :param project_id:
+    :param project:
+    """
     project.delete_project(project_id)
 
 
 def delete_task(task_id, rest_client):
+    """
+    Method to delete a task
+    :param task_id:
+    :param rest_client:
+    """
     LOGGER.debug("Cleanup task")
     url_delete_task = f"{URL_TODO}/tasks/{task_id}"
     LOGGER.info("Task Id to be deleted : %s", task_id)
     response = rest_client.request("delete", url_delete_task)
-    if response.status_code == 204:
+    if response["status_code"] == 204:
         LOGGER.info("Task Id deleted : %s", task_id)
 
 
-@pytest.fixture()
-def log_test_names(request):
+@pytest.fixture(name="_log_test_names")
+def log_test_names_fixture(request):
+    """
+    Method to log start and end test
+    :param request:
+    """
     LOGGER.info("Test '%s' STARTED", request.node.name)
 
     def fin():

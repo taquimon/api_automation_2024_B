@@ -1,10 +1,16 @@
+"""
+(c) Copyright Jalasoft. 2024
+
+test_projects.py
+    test class to run tests related to projects endpoint
+"""
 import logging
 
 import pytest
 
 from config.config import URL_TODO, MAX_PROJECTS
-from helpers.rest_client import RestClient
 from entities.project import Project
+from helpers.rest_client import RestClient
 from helpers.validate_response import ValidateResponse
 from utils.logger import get_logger
 
@@ -12,6 +18,9 @@ LOGGER = get_logger(__name__, logging.DEBUG)
 
 
 class TestProjects:
+    """
+    Class for projects tests
+    """
     @classmethod
     def setup_class(cls):
         """
@@ -27,7 +36,7 @@ class TestProjects:
         cls.project = Project()
 
     @pytest.mark.acceptance
-    def test_get_all_projects(self, log_test_names):
+    def test_get_all_projects(self, _log_test_names):
         """
         Test get all projects endpoint
         """
@@ -37,7 +46,7 @@ class TestProjects:
         self.validate.validate_response(response, "projects", "get_all_projects")
 
     @pytest.mark.acceptance
-    def test_get_project(self, log_test_names):
+    def test_get_project(self, _log_test_names):
         """
         Test get project endpoint
         """
@@ -48,7 +57,7 @@ class TestProjects:
         assert response["status_code"] == 200
 
     @pytest.mark.acceptance
-    def test_create_project(self, log_test_names):
+    def test_create_project(self, _log_test_names):
         """
         Test create project
         """
@@ -64,7 +73,7 @@ class TestProjects:
         self.validate.validate_response(response, "projects", "create_project")
 
     @pytest.mark.acceptance
-    def test_delete_project(self, create_project, log_test_names):
+    def test_delete_project(self, create_project, _log_test_names):
         """
         Test delete project
         """
@@ -76,11 +85,11 @@ class TestProjects:
         self.validate.validate_response(response, "projects", "delete_project")
 
     @pytest.mark.acceptance
-    def test_update_project(self, create_project, log_test_names):
+    def test_update_project(self, create_project, _log_test_names):
         """
-
+        Test for update project
         :param create_project:
-        :param log_test_names:
+        :param _log_test_names:
         :return:
         """
         LOGGER.info("Test update project")
@@ -98,8 +107,12 @@ class TestProjects:
         self.validate.validate_response(response, "projects", "update_project")
 
     @pytest.mark.functional
-    def test_max_number_projects(self,log_test_names):
-
+    def test_max_number_projects(self, _log_test_names):
+        """
+        Test to validate the max number of projects
+        :param _log_test_names:
+        :return:
+        """
         response = self.rest_client.request("get", self.url_todo_projects)
         number_of_projects = len(response["body"])
         LOGGER.debug("Number of current projects: %s", number_of_projects)
@@ -109,11 +122,11 @@ class TestProjects:
                 "color": "orange"
             }
 
-            response, _ = self.project.create_project(body=body_project)
+            response = self.project.create_project(body=body_project)
             self.project_list.append(response["body"]["id"])
 
         # try to create last project
-        response, _ = self.project.create_project()
+        response = self.project.create_project()
         self.validate.validate_response(response, "projects", "max_project")
 
     @classmethod
@@ -128,4 +141,3 @@ class TestProjects:
             response = cls.rest_client.request("delete", url_delete_project)
             if response["status_code"] == 204:
                 LOGGER.info("project Id deleted : %s", project_id)
-

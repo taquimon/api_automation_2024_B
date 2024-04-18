@@ -1,3 +1,9 @@
+"""
+(c) Copyright Jalasoft. 2024
+
+test_section.py
+    test class to run tests related to section endpoint
+"""
 import logging
 
 import allure
@@ -13,6 +19,9 @@ LOGGER = get_logger(__name__, logging.DEBUG)
 @allure.epic("TODOIST API")
 @allure.story("Sections Endpoints")
 class TestSections:
+    """
+    Class for section tests
+    """
     @classmethod
     def setup_class(cls):
         """
@@ -28,13 +37,13 @@ class TestSections:
     @allure.feature("Section")
     @allure.description("Test to get all sections")
     @pytest.mark.acceptance
-    def test_get_all_sections(self, log_test_names):
+    def test_get_all_sections(self, _log_test_names):
         """
         Test get all sections endpoint
         """
         response = self.rest_client.request("get", self.url_todo_sections)
 
-        assert response.status_code == 200
+        assert response["status_code"] == 200
 
     @allure.title("Test get all sections")
     @allure.issue("https://jira.com/SP-45", "Bug for sections")
@@ -43,7 +52,7 @@ class TestSections:
     @allure.feature("Section")
     @allure.description("Test to get all sections")
     @pytest.mark.acceptance
-    def test_get_all_sections_by_project(self, create_project, log_test_names):
+    def test_get_all_sections_by_project(self, create_project, _log_test_names):
         """
         Test get all section by project endpoint
         """
@@ -51,7 +60,7 @@ class TestSections:
         url_get_all_sections_by_project = f"{self.url_todo_sections}?project_id={create_project}"
         response = self.rest_client.request("get", url_get_all_sections_by_project)
 
-        assert response.status_code == 200
+        assert response["status_code"] == 200
 
     @allure.title("Test get all sections")
     @allure.issue("https://jira.com/SP-45", "Bug for sections")
@@ -60,7 +69,7 @@ class TestSections:
     @allure.feature("Section")
     @allure.description("Test to get all sections")
     @pytest.mark.acceptance
-    def test_get_section(self, create_section, log_test_names):
+    def test_get_section(self, create_section, _log_test_names):
         """
         Test get section endpoint
         """
@@ -77,7 +86,7 @@ class TestSections:
     @allure.feature("Section")
     @allure.description("Test to get all sections")
     @pytest.mark.acceptance
-    def test_create_section(self, create_project, log_test_names):
+    def test_create_section(self, create_project, _log_test_names):
         """
         Test create project
         """
@@ -88,7 +97,7 @@ class TestSections:
         }
         response = self.rest_client.request("post", self.url_todo_sections, body=body_section)
 
-        assert response.status_code == 200
+        assert response["status_code"] == 200
 
     @allure.title("Test delete section")
     @allure.issue("https://jira.com/SP-45", "Bug for sections")
@@ -97,7 +106,7 @@ class TestSections:
     @allure.feature("Section")
     @allure.description("Test to delete a section")
     @pytest.mark.acceptance
-    def test_delete_section(self, create_section, log_test_names):
+    def test_delete_section(self, create_section, _log_test_names):
         """
         Test delete project
         """
@@ -115,7 +124,12 @@ class TestSections:
     @allure.feature("Section")
     @allure.description("Test update section")
     @pytest.mark.acceptance
-    def test_update_section(self, create_section, log_test_names):
+    def test_update_section(self, create_section, _log_test_names):
+        """
+        Test to update section
+        :param create_section:
+        :param _log_test_names:
+        """
         LOGGER.info("Test update section")
         url_update_section = f"{self.url_todo_sections}/{create_section}"
         body_update_section = {
@@ -124,4 +138,3 @@ class TestSections:
         response = self.rest_client.request("post", url_update_section, body=body_update_section)
 
         assert response["status_code"] == 200
-

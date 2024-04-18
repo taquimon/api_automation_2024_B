@@ -24,7 +24,7 @@ class Project:
             }
         response = self.rest_client.request("post", self.url_todo_projects, body=body_project)
 
-        return response, self.rest_client
+        return response
 
     def delete_project(self, project_id):
         LOGGER.debug("Cleanup project")

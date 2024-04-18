@@ -1,3 +1,9 @@
+"""
+(c) Copyright Jalasoft. 2024
+
+test_task.py
+    test class to run tests related to task endpoint
+"""
 import logging
 
 
@@ -9,6 +15,9 @@ LOGGER = get_logger(__name__, logging.DEBUG)
 
 
 class TestTasks:
+    """
+    Class for tasks tests
+    """
     @classmethod
     def setup_class(cls):
         """
@@ -17,25 +26,15 @@ class TestTasks:
         cls.rest_client = RestClient()
         cls.url_todo_tasks = f"{URL_TODO}/tasks"
 
-    def test_get_all_tasks(self, log_test_names):
+    def test_get_all_tasks(self, _log_test_names):
         """
         Test get all tasks endpoint
         """
         response = self.rest_client.request("get", self.url_todo_tasks)
 
-        assert response.status_code == 200
+        assert response["status_code"] == 200
 
-    # def test_get_all_sections_by_project(self, create_project, log_test_names):
-    #     """
-    #     Test get all section by project endpoint
-    #     """
-    #     LOGGER.info("Test get all sections by project")
-    #     url_get_all_sections_by_project = f"{self.url_todo_sections}?project_id={create_project}"
-    #     response = self.rest_client.request("get", url_get_all_sections_by_project)
-    #
-    #     assert response.status_code == 200
-    #
-    def test_get_task(self, create_task, log_test_names):
+    def test_get_task(self, create_task, _log_test_names):
         """
         Test get project endpoint
         """
@@ -43,9 +42,9 @@ class TestTasks:
         url_get_task = f"{self.url_todo_tasks}/{create_task}"
         response = self.rest_client.request("get", url_get_task)
 
-        assert response.status_code == 200
+        assert response["status_code"] == 200
 
-    def test_create_task(self, log_test_names):
+    def test_create_task(self, _log_test_names):
         """
         Test create task
         """
@@ -58,9 +57,9 @@ class TestTasks:
         }
         response = self.rest_client.request("post", self.url_todo_tasks, body=body_task)
 
-        assert response.status_code == 200
+        assert response["status_code"] == 200
 
-    def test_delete_task(self, create_task, log_test_names):
+    def test_delete_task(self, create_task, _log_test_names):
         """
         Test delete task
         """
@@ -69,15 +68,4 @@ class TestTasks:
         LOGGER.info("project Id to be deleted : %s", create_task)
         response = self.rest_client.request("delete", url_delete_task)
 
-        assert response.status_code == 204
-    #
-    # def test_update_section(self, create_section, log_test_names):
-    #     LOGGER.info("Test update section")
-    #     url_update_section = f"{self.url_todo_sections}/{create_section}"
-    #     body_update_section = {
-    #         "name": "Updated section"
-    #     }
-    #     response = self.rest_client.request("post", url_update_section, body=body_update_section)
-    #
-    #     assert response.status_code == 200
-
+        assert response["status_code"] == 204
