@@ -61,7 +61,7 @@ def before_scenario(context, scenario):
     LOGGER.info("Test '%s' STARTED", scenario.name)
 
     if "project_id" in scenario.tags:
-        new_project, _ = context.project.create_project()
+        new_project = context.project.create_project()
         context.project_id = new_project["body"]["id"]
         context.resource_list["projects"].append(context.project_id)
         LOGGER.warning(context.resource_list)
