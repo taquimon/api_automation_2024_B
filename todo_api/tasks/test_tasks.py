@@ -49,12 +49,13 @@ class TestTasks:
         Test create task
         """
         LOGGER.info("Test create task")
-        body_task= {
+        body_task = {
             "content": "Buy Milk",
             "due_string": "tomorrow at 12:00",
             "due_lang": "en",
             "priority": 4
         }
+
         response = self.rest_client.request("post", self.url_todo_tasks, body=body_task)
 
         assert response["status_code"] == 200

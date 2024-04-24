@@ -11,6 +11,7 @@ from entities.project import Project
 from helpers.rest_client import RestClient
 from helpers.validate_response import ValidateResponse
 from utils.logger import get_logger
+from utils.wiremock_stub import WiremockStub
 
 LOGGER = get_logger(__name__, logging.DEBUG)
 
@@ -35,6 +36,7 @@ def before_all(context):
     }
     context.validate = ValidateResponse()
     context.project = Project()
+    context.wiremock_stub = WiremockStub()
 
 
 # def before_feature(context, feature):
@@ -66,6 +68,11 @@ def before_scenario(context, scenario):
         context.resource_list["projects"].append(context.project_id)
         LOGGER.warning(context.resource_list)
 
+    if "stub" in scenario.tags:
+        response_stub, wiremock = context.wiremock_stub.create_stub("comments", "get_comment")
+        context.comment_id_stub = response_stub["body"]["id"]
+        context.wiremock = wiremock
+
 
 def after_scenario(context, scenario):
     """
@@ -92,9 +99,12 @@ def after_scenario(context, scenario):
 #     LOGGER.info("After feature")
 
 
-# def after_all(context):
-#     """
-#
-#     :param context:
-#     """
-#     LOGGER.info("After all")
+def after_all(context):
+    """
+
+    :param context:
+    """
+    LOGGER.info("After all")
+    context.wiremock_stub.stop()
+
+

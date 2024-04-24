@@ -23,7 +23,13 @@ def step_call_get_endpoint(context, endpoint):
     """
     LOGGER.debug("STEP: When I call to '%s' endpoint using 'GET' "
                  "option and with parameters", endpoint)
-    url_endpoint = get_url_by_feature(context, endpoint)
+    url_endpoint = ""
+    if context.text:
+        LOGGER.debug("Comments text: %s", context.text)
+        if "stub" in json.loads(context.text):
+            url_endpoint = f"http://localhost:{context.wiremock.port}/__admin/mappings/{context.comment_id_stub}"
+    else:
+        url_endpoint = get_url_by_feature(context, endpoint)
     response = context.rest_client.request("get", url_endpoint)
     context.response = response
     context.endpoint = endpoint

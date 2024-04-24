@@ -1,10 +1,10 @@
 {
   "request": {
     "url": "/comments",
-    "method": "GET"
+    "method": "POST"
   },
   "response": {
-    "status": 200,
+    "status": 201,
     "jsonBody": {
       "content": "Need one bottle of milk",
       "id": "2992679862",

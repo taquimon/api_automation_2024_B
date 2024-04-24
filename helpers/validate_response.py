@@ -9,7 +9,7 @@ LOGGER = get_logger(__name__, logging.DEBUG)
 
 class ValidateResponse:
 
-    def validate_response(self, actual_response=None, endpoint=None, file_name=None):
+    def validate_response(self, actual_response=None, endpoint=None, file_name=None, stub=False):
         """
 
         :param actual_response:  REST response
@@ -19,12 +19,22 @@ class ValidateResponse:
         expected_response = self.read_input_data_json(f"{abs_path}/todo_api/input_data/{endpoint}/{file_name}.json")
 
         # compare results
-        # validate status_code
-        self.validate_value(expected_response["status_code"], actual_response["status_code"], "status_code")
-        # validate headers
-        self.validate_value(expected_response["headers"], actual_response["headers"], "headers")
-        # validate body
-        self.validate_value(expected_response["response"]["body"], actual_response["body"], "body")
+        if stub:
+            self.validate_value(expected_response["response"]["status"],
+                                actual_response["body"]["response"]["status"], "status_code")
+            # validate headers
+            self.validate_value(expected_response["response"]["headers"],
+                                actual_response["body"]["response"]["headers"], "headers")
+            # validate body
+            self.validate_value(expected_response["response"]["jsonBody"],
+                                actual_response["body"]["response"]["jsonBody"], "body")
+        else:
+            # validate status_code
+            self.validate_value(expected_response["status_code"], actual_response["status_code"], "status_code")
+            # validate headers
+            self.validate_value(expected_response["headers"], actual_response["headers"], "headers")
+            # validate body
+            self.validate_value(expected_response["response"]["body"], actual_response["body"], "body")
 
     def validate_value(self, expected_value, actual_value, key_compare):
         error_message = f"Expected '{expected_value}' but received '{actual_value}'"
