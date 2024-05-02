@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 
 from config.config import URL_TODO
@@ -8,8 +10,7 @@ LOGGER = get_logger(__name__, logging.DEBUG)
 
 
 class Project:
-
-    def __init__(self, rest_client=None):
+    def __init__(self, rest_client=None, project_name=None):
         self.url_todo_projects = f"{URL_TODO}/projects"
         self.rest_client = rest_client
         if rest_client is None:
@@ -20,9 +21,13 @@ class Project:
         if body is None:
             body_project = {
                 "name": "Project from entity",
-                "color": "orange"
+                "color": "orange",
             }
-        response = self.rest_client.request("post", self.url_todo_projects, body=body_project)
+        response = self.rest_client.request(
+            "post",
+            self.url_todo_projects,
+            body=body_project,
+        )
 
         return response
 

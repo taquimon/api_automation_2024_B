@@ -4,6 +4,8 @@
 test_section.py
     test class to run tests related to section endpoint
 """
+from __future__ import annotations
+
 import logging
 
 import allure
@@ -22,6 +24,7 @@ class TestSections:
     """
     Class for section tests
     """
+
     @classmethod
     def setup_class(cls):
         """
@@ -57,7 +60,9 @@ class TestSections:
         Test get all section by project endpoint
         """
         LOGGER.info("Test get all sections by project")
-        url_get_all_sections_by_project = f"{self.url_todo_sections}?project_id={create_project}"
+        url_get_all_sections_by_project = (
+            f"{self.url_todo_sections}?project_id={create_project}"
+        )
         response = self.rest_client.request("get", url_get_all_sections_by_project)
 
         assert response["status_code"] == 200
@@ -91,11 +96,15 @@ class TestSections:
         Test create project
         """
         LOGGER.info("Test create section")
-        body_section= {
+        body_section = {
             "project_id": f"{create_project}",
-            "name": "Groceries"
+            "name": "Groceries",
         }
-        response = self.rest_client.request("post", self.url_todo_sections, body=body_section)
+        response = self.rest_client.request(
+            "post",
+            self.url_todo_sections,
+            body=body_section,
+        )
 
         assert response["status_code"] == 200
 
@@ -133,8 +142,12 @@ class TestSections:
         LOGGER.info("Test update section")
         url_update_section = f"{self.url_todo_sections}/{create_section}"
         body_update_section = {
-            "name": "Updated section"
+            "name": "Updated section",
         }
-        response = self.rest_client.request("post", url_update_section, body=body_update_section)
+        response = self.rest_client.request(
+            "post",
+            url_update_section,
+            body=body_update_section,
+        )
 
         assert response["status_code"] == 200

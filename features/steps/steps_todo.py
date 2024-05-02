@@ -4,10 +4,15 @@
 steps_todo.py
     file contains all steps definitions for feature files
 """
+from __future__ import annotations
+
 import json
 import logging
 
-from behave import when, then
+from behave import then
+from behave import when
+from steps.type_definitions import Task
+
 from utils.logger import get_logger
 
 
@@ -21,8 +26,10 @@ def step_call_get_endpoint(context, endpoint):
     :param context:
     :param endpoint:
     """
-    LOGGER.debug("STEP: When I call to '%s' endpoint using 'GET' "
-                 "option and with parameters", endpoint)
+    LOGGER.debug(
+        "STEP: When I call to '%s' endpoint using 'GET' " "option and with parameters",
+        endpoint,
+    )
     url_endpoint = ""
     if context.text:
         LOGGER.debug("Comments text: %s", context.text)
@@ -42,8 +49,10 @@ def step_call_post_endpoint(context, endpoint):
     :param context:
     :param endpoint:
     """
-    LOGGER.debug('STEP: When I call to "%s" endpoint using "POST" '
-                 'option and with parameters', endpoint)
+    LOGGER.debug(
+        'STEP: When I call to "%s" endpoint using "POST" ' "option and with parameters",
+        endpoint,
+    )
     url_endpoint = get_url_by_feature(context, endpoint)
     body_endpoint = {}
     if context.text:
@@ -52,7 +61,7 @@ def step_call_post_endpoint(context, endpoint):
     else:
         body_endpoint = {
             "name": "Complete task C#",
-            "color": "orange"
+            "color": "orange",
         }
     response = context.rest_client.request("post", url_endpoint, body=body_endpoint)
     # add to list of resources the resource created (id)
@@ -70,8 +79,11 @@ def step_call_delete_endpoint(context, endpoint):
     :param context:
     :param endpoint:
     """
-    LOGGER.debug('STEP: When I call to "%s" endpoint using "DELETE" '
-                 'option and with parameters', endpoint)
+    LOGGER.debug(
+        'STEP: When I call to "%s" endpoint using "DELETE" '
+        "option and with parameters",
+        endpoint,
+    )
 
     url_delete_project = get_url_by_feature(context, endpoint, resource_id=True)
     response = context.rest_client.request("delete", url_delete_project)
@@ -86,11 +98,11 @@ def step_receive_response(context, json_file):
     :param context:
     :param json_file:
     """
-    LOGGER.debug('STEP: Then I receive the response and validate')
+    LOGGER.debug("STEP: Then I receive the response and validate")
     context.validate.validate_response(context.response, context.endpoint, json_file)
 
 
-@then('I validate the status code is {status_code:d}')
+@then("I validate the status code is {status_code:d}")
 def step_validate_status_code(context, status_code):
     """
     Step to validate the status code
@@ -98,8 +110,9 @@ def step_validate_status_code(context, status_code):
     :param status_code:
     """
     LOGGER.debug("STEP: Then I validate the status code is %s", status_code)
-    assert context.response["status_code"] == status_code, \
-        f"Expected {status_code} but received {context.response['status_code']}"
+    assert (
+        context.response["status_code"] == status_code
+    ), f"Expected {status_code} but received {context.response['status_code']}"
 
 
 def get_url_by_feature(context, endpoint, resource_id=False):
@@ -140,8 +153,26 @@ def update_json_param(context, json_data):
     for k in keys:
         for d in json_data.keys():
             if d == k and hasattr(context, k):
-                json_data[d] = getattr(context, k) # "project_id" = "2124123"
+                json_data[d] = getattr(context, k)  # "project_id" = "2124123"
                 LOGGER.debug("Key changed %s: ", d)
     LOGGER.debug("New JSON data: %s", json_data)
 
     return json_data
+
+
+@when(u'I create a task "{task_content:Task}" in TODOIST API')
+def step_impl(context, task_content):
+    LOGGER.debug('STEP: Given I create a task "Task created using data type" in TODOIST API')
+
+    if context.table:
+        for row in context.table:
+            LOGGER.debug(row)
+            context.task = Task(task_content=row['task_content_title'], priority=row['priority'])
+            context.response = context.task.create_task()
+            task_id = context.response["body"]["id"]
+            context.resource_list["tasks"].append(task_id)
+    else:
+        context.task = task_content
+        context.response = context.task.create_task()
+        task_id = context.response["body"]["id"]
+        context.resource_list["tasks"].append(task_id)

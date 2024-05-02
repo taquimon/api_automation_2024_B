@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import unittest
 
@@ -7,7 +9,6 @@ LOGGER = get_logger(__name__, logging.DEBUG)
 
 
 class TestUnitTestExample(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         """

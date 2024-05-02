@@ -41,11 +41,11 @@ behave is one of the most popular Python BDD frameworks. Although it is not offi
 Gherkin files are plain text Files and have the extension .feature
 A feature file can contain one or more scenarios. Relevant Tags (@Tag) are used to differentiate between different Scenarios
 
-* **Feature**. Provides a high-level description of the software feature. 
+* **Feature**. Provides a high-level description of the software feature.
 * **Scenario**. Indicates the title of the test case.
-* **Given**. Describes a set of pre-conditions for the Test automation scenario. 
+* **Given**. Describes a set of pre-conditions for the Test automation scenario.
 * **When**. Describes the scenario steps
-* **Then**. Describes the Scenario outcome, can be validations 
+* **Then**. Describes the Scenario outcome, can be validations
 * **And, But (Steps)**, Used to provide additional steps
 * **Background**
 * **Scenario Outline**
@@ -93,9 +93,9 @@ The outcome of this step should be an observable output that is something like a
 * Connection is invited
 
 ### And, But
-When we have multiple steps for the one type of step like, for example 2 conditions that should be valid as a 
-prerequisite, then after ‘Given’ the two steps can be separated by an ‘And’. Similarly, for ‘But’. 
-These can be used with ‘Given’,’ When’ or ‘Then’ as needed. Using these keywords helps keep the documentation 
+When we have multiple steps for the one type of step like, for example 2 conditions that should be valid as a
+prerequisite, then after ‘Given’ the two steps can be separated by an ‘And’. Similarly, for ‘But’.
+These can be used with ‘Given’,’ When’ or ‘Then’ as needed. Using these keywords helps keep the documentation
 organized and increases readability by making it more structured.
 
 
@@ -113,7 +113,7 @@ For example, without scenario outline, passing multiple values to the same scena
 Using Gherkin language to write and define the behaviour in your BDD framework has many advantages. Some of the major ones are mentioned below:
 
 1. Gherkin is simple
-2. Increases code reusability 
+2. Increases code reusability
 3. Focuses on project requirements
 
 ## Disadvantages of Using Gherkin:
@@ -129,16 +129,16 @@ Every tool and software has limitations and disadvantages, and Gherkin is no dif
 ```gherkin
 @acceptance @projects @smoke
 Feature: <title>
-  
+
   In order to <do something>
   As a <user>
   I want to <achieve some goal>
-  
+
   @tag_scenario
   Scenario: <title>
-  
+
     <additional description>
-  
+
     Given <some state>
     When <some action>
     Then <some expectation> with <some_name> # where <some_name> is actual Gherkin syntax for a table lookup!
@@ -191,7 +191,7 @@ pip install allure-behave
 ```
 
 ### Execution
- 
+
 - Configure behave.ini file
 ```ini
 [behave]
@@ -203,7 +203,7 @@ outfiles=allure-results
 ```shell
 behave -f allure_behave.formatter:AllureFormatter -o {allure_report_folder} {path_to_feature_file}
 ```
-## Metadata 
+## Metadata
 
 ### Gherkin tags example
 ```gherkin

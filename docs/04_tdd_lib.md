@@ -41,7 +41,7 @@ ignore a specific line of code
 ignore in rcfile (example)
 ```editorconfig
   [MESSAGES CONTROL]
-  disable= 
+  disable=
     wildcard-import,
     method-hidden,
     too-many-lines
@@ -63,7 +63,7 @@ pip install flake8
 * Testify
 
 ## Unittest
-Unit Test Framework features: 
+Unit Test Framework features:
 
 - **test fixture**. A test fixture represents the preparation needed to perform one or more tests, and any associated cleanup actions. This may involve, for example, creating temporary or proxy databases, directories, or starting a server process.
 - **test case**. A test case is the individual unit of testing. It checks for a specific response to a particular set of inputs. unittest provides a base class, TestCase, which may be used to create new test cases.
@@ -127,5 +127,5 @@ At its core, the test is ultimately the act and assert steps, with the arrange s
 > unittests: https://docs.python.org/3/library/unittest.html
 
 > nose2: https://docs.nose2.io/en/latest/
- 
+
 > pytest: https://docs.pytest.org/en/8.0.x/

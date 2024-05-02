@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 
 import pytest
@@ -20,8 +22,14 @@ def fixture_example(request):
 
 def pytest_addoption(parser):
     parser.addoption(
-        '--env', action='store', default='dev', help="Environment where test will be executed"
+        "--env",
+        action="store",
+        default="dev",
+        help="Environment where test will be executed",
     )
     parser.addoption(
-        '--browser', action='store', default='firefox', help="Browser to be executed the UI tests"
+        "--browser",
+        action="store",
+        default="firefox",
+        help="Browser to be executed the UI tests",
     )

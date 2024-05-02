@@ -117,7 +117,7 @@ docker build -t auto_framework .
 
 command to run
 ```shell
-docker run -ti auto_framework bash	
+docker run -ti auto_framework bash
 ```
 
 ## GitLab

@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import json
 import logging
 
 import requests
+from requests.adapters import HTTPAdapter
 
 from config.config import HEADERS_TODO
 from utils.logger import get_logger
@@ -10,7 +13,6 @@ LOGGER = get_logger(__name__, logging.DEBUG)
 
 
 class RestClient:
-
     def __init__(self, headers=HEADERS_TODO):
         self.session = requests.Session()
         self.session.headers.update(headers)
@@ -30,7 +32,12 @@ class RestClient:
         """
         response_dict = {}
         try:
-            response = self.select_method(method_name, self.session)(url=url, data=body)
+            self.session.mount(url, HTTPAdapter(max_retries=20))
+            response = self.select_method(method_name, self.session)(
+                url=url,
+                data=body,
+                timeout=(10, 2),
+            )
             LOGGER.debug("Response to request: %s", response.text)
             LOGGER.debug("Status Code: %s", response.status_code)
             response.raise_for_status()
@@ -43,6 +50,8 @@ class RestClient:
             response_dict["headers"] = response.headers
         except requests.exceptions.RequestException as request_error:
             LOGGER.error("HTTP Error: %s", request_error)
+        except requests.exceptions.Timeout as timeout_error:
+            LOGGER.error("Timeout Error: %s", timeout_error)
         finally:
             if response.text:
                 if response.ok:
@@ -67,6 +76,6 @@ class RestClient:
             "get": session.get,
             "post": session.post,
             "delete": session.delete,
-            "put": session.put
+            "put": session.put,
         }
         return methods.get(method_name)

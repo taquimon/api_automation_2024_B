@@ -14,12 +14,21 @@ url for API http://127.0.0.1:8000/docs
 
 para los password https://bcrypt-generator.com/
 """
-from datetime import datetime, timedelta, timezone
+from __future__ import annotations
+
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
+from fastapi import Depends
+from fastapi import FastAPI
+from fastapi import HTTPException
+from fastapi import status
+from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt
+from jose import JWTError
 from passlib.context import CryptContext
 from pydantic import BaseModel
 
@@ -38,7 +47,7 @@ fake_users_db = {
         "email": "taquimon@gmail.com",
         "hashed_password": "$2a$12$T.jftj1XXEDweJjpRGA26OJZBM/SeXur.7BH9CfsU5XKBXWAZE9LK",
         "disabled": False,
-    }
+    },
 }
 
 
@@ -71,7 +80,8 @@ app = FastAPI(
     title="AutomationAPI",
     description="Automation API Example for testing",
     summary="API used for testing purposes",
-    version="0.0.1")
+    version="0.0.1",
+)
 
 
 def verify_password(plain_password, hashed_password):
@@ -122,14 +132,14 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user(fake_users_db, username=token_data.username)
+    user = get_user(fake_users_db, username=str(token_data.username))
     if user is None:
         raise credentials_exception
     return user
 
 
 async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
@@ -138,7 +148,7 @@ async def get_current_active_user(
 
 @app.post("/token", tags=["token"])
 async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
     user = authenticate_user(fake_users_db, form_data.username, form_data.password)
     if not user:
@@ -149,27 +159,31 @@ async def login_for_access_token(
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={"sub": user.username},
+        expires_delta=access_token_expires,
     )
     return Token(access_token=access_token, token_type="bearer")
 
 
 @app.get("/users/me/", response_model=User, tags=["users"])
 async def read_users_me(
-    current_user: Annotated[User, Depends(get_current_active_user)]
+    current_user: Annotated[User, Depends(get_current_active_user)],
 ):
     return current_user
 
 
 @app.get("/users/me/items/", tags=["users"])
 async def read_own_items(
-    current_user: Annotated[User, Depends(get_current_active_user)]
+    current_user: Annotated[User, Depends(get_current_active_user)],
 ):
     return [{"item_id": "Foo", "owner": current_user.username}]
 
 
 @app.post("/users/", tags=["users"])
-async def create_user(user: User, current_user: Annotated[User, Depends(get_current_active_user)]):
+async def create_user(
+    user: User,
+    current_user: Annotated[User, Depends(get_current_active_user)],
+):
     new_user = {
         "username": user.username,
         "full_name": user.full_name,

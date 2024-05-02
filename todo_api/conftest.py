@@ -1,9 +1,11 @@
 """
 (c) Copyright Jalasoft. 2024
 
-conftest.py
+conftest_unittest.py
     configuration tes file to locate fixtures
 """
+from __future__ import annotations
+
 import logging
 
 import pytest
@@ -45,7 +47,7 @@ def create_section_fixture(create_project):
     LOGGER.info("Test create section")
     body_section = {
         "project_id": f"{create_project}",
-        "name": "Section from fixture"
+        "name": "Section from fixture",
     }
     url_todo_sections = f"{URL_TODO}/sections"
     rest_client = RestClient()
@@ -63,10 +65,10 @@ def create_task_fixture():
     task_id = None
     LOGGER.info("Fixture create task")
     body_task = {
-            "content": "Task created from fixture",
-            "due_string": "tomorrow at 12:00",
-            "due_lang": "en",
-            "priority": 4
+        "content": "Task created from fixture",
+        "due_string": "tomorrow at 12:00",
+        "due_lang": "en",
+        "priority": 4,
     }
     url_todo_tasks = f"{URL_TODO}/tasks"
     rest_client = RestClient()

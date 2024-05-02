@@ -4,6 +4,8 @@
 environment.py
     file contains all environment functions/fixtures to be used by features
 """
+from __future__ import annotations
+
 import logging
 
 from config.config import URL_TODO
@@ -32,7 +34,7 @@ def before_all(context):
     context.resource_list = {
         "tasks": [],
         "sections": [],
-        "projects": []
+        "projects": [],
     }
     context.validate = ValidateResponse()
     context.project = Project()
@@ -57,7 +59,7 @@ def before_scenario(context, scenario):
     context.resource_list = {
         "tasks": [],
         "sections": [],
-        "projects": []
+        "projects": [],
     }
     LOGGER.info("Before Scenario")
     LOGGER.info("Test '%s' STARTED", scenario.name)
@@ -69,7 +71,10 @@ def before_scenario(context, scenario):
         LOGGER.warning(context.resource_list)
 
     if "stub" in scenario.tags:
-        response_stub, wiremock = context.wiremock_stub.create_stub("comments", "get_comment")
+        response_stub, wiremock = context.wiremock_stub.create_stub(
+            "comments",
+            "get_comment",
+        )
         context.comment_id_stub = response_stub["body"]["id"]
         context.wiremock = wiremock
 
@@ -106,5 +111,3 @@ def after_all(context):
     """
     LOGGER.info("After all")
     context.wiremock_stub.stop()
-
-

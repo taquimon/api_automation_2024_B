@@ -3,7 +3,7 @@
 * Testing libraries
 * Unit Testing
 * Integration Testing
-* End to End Testing 
+* End to End Testing
 * BDD
 
 <img height="500" src="img/test-automation-components.png" width="500"/>
@@ -59,10 +59,10 @@ def get_token():
     client = hvac.Client(
         url='http://127.0.0.1:8200',
         token='xxxxxx',
-    )    
+    )
 
     read_response = client.secrets.kv.read_secret_version(path='')
-    
+
     token = read_response['data']['data']['']
     print(token)
     return token
@@ -79,4 +79,3 @@ Create basic CRUD like projects example using a different API:
 - Delete (DELETE)
 - Update
 - Cleanup
-

@@ -4,8 +4,9 @@
 test_task.py
     test class to run tests related to task endpoint
 """
-import logging
+from __future__ import annotations
 
+import logging
 
 from config.config import URL_TODO
 from helpers.rest_client import RestClient
@@ -18,13 +19,14 @@ class TestTasks:
     """
     Class for tasks tests
     """
+
     @classmethod
     def setup_class(cls):
         """
         Setup class for tasks
         """
         cls.rest_client = RestClient()
-        cls.url_todo_tasks = f"{URL_TODO}/tasks"
+        cls.url_todo_tasks = f"{URL_TODO}/task"
 
     def test_get_all_tasks(self, _log_test_names):
         """
@@ -53,13 +55,14 @@ class TestTasks:
             "content": "Buy Milk",
             "due_string": "tomorrow at 12:00",
             "due_lang": "en",
-            "priority": 4
+            "priority": 4,
         }
 
         response = self.rest_client.request("post", self.url_todo_tasks, body=body_task)
 
         assert response["status_code"] == 200
 
+    # @pytest.mark.flaky(retries=2, only_on=[AssertionError, IndexError])
     def test_delete_task(self, create_task, _log_test_names):
         """
         Test delete task
@@ -69,4 +72,4 @@ class TestTasks:
         LOGGER.info("project Id to be deleted : %s", create_task)
         response = self.rest_client.request("delete", url_delete_task)
 
-        assert response["status_code"] == 204
+        assert response["status_code"] == 201

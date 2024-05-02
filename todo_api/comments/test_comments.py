@@ -4,12 +4,12 @@
 test_comments.py
     test class to run tests related to comments endpoint
 """
+from __future__ import annotations
+
 import logging
 
 import pytest
 
-from config.config import URL_TODO
-from entities.project import Project
 from helpers.rest_client import RestClient
 from helpers.validate_response import ValidateResponse
 from utils.logger import get_logger
@@ -22,13 +22,16 @@ class TestProjects:
     """
     Class for projects tests
     """
+
     @classmethod
     def setup_class(cls):
         """
         Setup class for projects
         """
         cls.rest_client = RestClient()
-        cls.url_todo_comments = "http://localhost:8088/__admin/mappings" # f"{URL_TODO}/projects"
+        cls.url_todo_comments = (
+            "http://localhost:8088/__admin/mappings"  # f"{URL_TODO}/projects"
+        )
 
         cls.comments_list = []
         cls.validate = ValidateResponse()
@@ -42,11 +45,16 @@ class TestProjects:
         """
         LOGGER.info("Test get comment")
         # create stub
-        response_stub, wiremock = self.wiremock_stub.create_stub("comments", "get_comment")
+        response_stub, wiremock = self.wiremock_stub.create_stub(
+            "comments",
+            "get_comment",
+        )
         comment_id_stub = response_stub["body"]["id"]
         LOGGER.debug("Get Comment Stub Id: %s", comment_id_stub)
         # test over stub created
-        url_comment = f"http://localhost:{wiremock.port}/__admin/mappings/{comment_id_stub}"
+        url_comment = (
+            f"http://localhost:{wiremock.port}/__admin/mappings/{comment_id_stub}"
+        )
 
         response = self.rest_client.request("get", url_comment)
         LOGGER.debug("Response Get Comment: %s", response)
@@ -60,13 +68,23 @@ class TestProjects:
         """
         LOGGER.info("Test create comment")
         # create stub
-        response_stub, wiremock = self.wiremock_stub.create_stub("comments", "create_comment")
+        response_stub, wiremock = self.wiremock_stub.create_stub(
+            "comments",
+            "create_comment",
+        )
         # test over stub created
         comment_id_stub = response_stub["body"]["id"]
         LOGGER.debug("Get Comment Stub Id: %s", comment_id_stub)
         # test over stub created
-        url_comment = f"http://localhost:{wiremock.port}/__admin/mappings/{comment_id_stub}"
+        url_comment = (
+            f"http://localhost:{wiremock.port}/__admin/mappings/{comment_id_stub}"
+        )
 
         response = self.rest_client.request("get", url_comment)
         LOGGER.debug("Response Create Comment: %s", response)
-        self.validate.validate_response(response, "comments", "create_comment", stub=True)
+        self.validate.validate_response(
+            response,
+            "comments",
+            "create_comment",
+            stub=True,
+        )

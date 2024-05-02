@@ -13,7 +13,7 @@ docker pull wiremock/wiremock:latest
 ```
 
 > run wiremock
- 
+
 ```shell
 docker run -it --rm -p 8088:8088 --name wiremock wiremock/wiremock:latest
 ```
@@ -38,6 +38,6 @@ pip install wiremock[testing]
 ```
 
 
-## References: 
+## References:
 
 https://wiremock.org/docs/solutions/python/

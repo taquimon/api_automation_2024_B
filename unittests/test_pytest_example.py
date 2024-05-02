@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import sys
 
@@ -10,7 +12,6 @@ LOGGER = get_logger(__name__, logging.DEBUG)
 
 @pytest.mark.projects
 class TestPytestExample:
-
     def setup_method(self):
         """
         Pytest setup method
@@ -38,7 +39,10 @@ class TestPytestExample:
         LOGGER.debug("Test One: %s", fixture_example)
 
     @pytest.mark.skip(reason="Bug: 1234 opened")
-    @pytest.mark.skipif(sys.platform == "win32", reason="Test only runs on Linux")  # @pytest.mark.skip(condition, reason)
+    @pytest.mark.skipif(
+        sys.platform == "win32",
+        reason="Test only runs on Linux",
+    )  # @pytest.mark.skip(condition, reason)
     @pytest.mark.acceptance
     def test_two(self):
         """

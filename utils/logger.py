@@ -4,8 +4,9 @@
 logger.py
     configuration of logger file
 """
+from __future__ import annotations
+
 import logging
-import os
 import pathlib
 import sys
 from datetime import datetime
@@ -42,8 +43,11 @@ def get_logger(name, level=DEFAULT_LOG_LEVEL, log_format=DEFAULT_LOG_FORMAT):
         # abs_path = os.path.abspath(__file__ + "../../../")
         # if logs folder there is not exist it wil be created
         pathlib.Path(f"{abs_path}/logs").mkdir(parents=True, exist_ok=True)
-        handler_file = handlers.RotatingFileHandler(f"{abs_path}/logs/{log_file_name}.log",
-                                                    maxBytes=1000000, backupCount=5)
+        handler_file = handlers.RotatingFileHandler(
+            f"{abs_path}/logs/{log_file_name}.log",
+            maxBytes=1000000,
+            backupCount=5,
+        )
         handler_file.setLevel(level)
 
         fmt = logging.Formatter(log_format)

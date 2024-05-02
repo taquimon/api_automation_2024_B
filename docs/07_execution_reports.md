@@ -5,7 +5,7 @@
  python -m pytest todo_api/sections/test_sections.py -v -s
 ```
 
-> if only want execute 1 test 
+> if only want execute 1 test
 
 ```shell
  python -m pytest todo_api/sections/test_sections.py::TestSection::test_get_section -v -s
@@ -45,7 +45,7 @@ After that you can run your tests with command:
 ### junitxml
 > package junitxml is included in pytest
 
-then execute command 
+then execute command
 
 ```shell
  python -m pytest todo_api/sections/test_sections.py -v -s --junitxml=report.xml
@@ -59,7 +59,7 @@ then execute command
 pip install pytest-html
 ```
 
-then execute command 
+then execute command
 
 ```shell
  python -m pytest todo_api/sections/test_sections.py -v -s --html=pytest_html_report.html
@@ -72,7 +72,7 @@ then execute command
 pip install pytest-excel
 ```
 
-then execute command 
+then execute command
 
 ```shell
  python -m pytest todo_api/sections/test_sections.py -v -s --excelreport=report.xlsx
@@ -84,7 +84,7 @@ then execute command
 pip install pytest-md-report
 ```
 
-then execute command 
+then execute command
 
 ```shell
  python -m pytest todo_api/sections/test_sections.py -v -s --md-report --md-report-output md_report.md
@@ -97,14 +97,14 @@ then execute command
 pip install allure-pytest
 ```
 
-> then execute command 
+> then execute command
 
 ```shell
  python -m pytest todo_api/sections/test_sections.py -v -s --alluredir allure-results
 
 ```
 > Once reports is generated you can see with command:
- 
+
 ```shell
 allure serve allure_results
 ```
@@ -120,12 +120,12 @@ pip install pymsteams
 
 > Pytest junitxml: https://www.browserstack.com/docs/test-management/upload-reports-cli/frameworks/pytest
 
-> Pytest html: https://pypi.python.org/pypi/pytest-html 
+> Pytest html: https://pypi.python.org/pypi/pytest-html
 
-> Pytest excel: https://pypi.python.org/pypi/pytest-excel 
+> Pytest excel: https://pypi.python.org/pypi/pytest-excel
 
 > Pytest Markdown: https://pypi.org/project/pytest-md-report/
 
 > allure pytest: https://allurereport.org/docs/pytest/ , https://allurereport.org/docs/, https://installati.one/install-allure-ubuntu-22-04/
 
-> Teams and weebooks: https://www.datacamp.com/tutorial/how-to-send-microsoft-teams-messages-with-python 
+> Teams and weebooks: https://www.datacamp.com/tutorial/how-to-send-microsoft-teams-messages-with-python

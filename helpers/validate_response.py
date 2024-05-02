@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import logging
 
@@ -8,33 +10,61 @@ LOGGER = get_logger(__name__, logging.DEBUG)
 
 
 class ValidateResponse:
-
-    def validate_response(self, actual_response=None, endpoint=None, file_name=None, stub=False):
+    def validate_response(
+        self,
+        actual_response=None,
+        endpoint=None,
+        file_name=None,
+        stub=False,
+    ):
         """
 
         :param actual_response:  REST response
         :param endpoint:         endpoint used i.e projects
         """
         # read from json file
-        expected_response = self.read_input_data_json(f"{abs_path}/todo_api/input_data/{endpoint}/{file_name}.json")
+        expected_response = self.read_input_data_json(
+            f"{abs_path}/todo_api/input_data/{endpoint}/{file_name}.json",
+        )
 
         # compare results
         if stub:
-            self.validate_value(expected_response["response"]["status"],
-                                actual_response["body"]["response"]["status"], "status_code")
+            self.validate_value(
+                expected_response["response"]["status"],
+                actual_response["body"]["response"]["status"],
+                "status_code",
+            )
             # validate headers
-            self.validate_value(expected_response["response"]["headers"],
-                                actual_response["body"]["response"]["headers"], "headers")
+            self.validate_value(
+                expected_response["response"]["headers"],
+                actual_response["body"]["response"]["headers"],
+                "headers",
+            )
             # validate body
-            self.validate_value(expected_response["response"]["jsonBody"],
-                                actual_response["body"]["response"]["jsonBody"], "body")
+            self.validate_value(
+                expected_response["response"]["jsonBody"],
+                actual_response["body"]["response"]["jsonBody"],
+                "body",
+            )
         else:
             # validate status_code
-            self.validate_value(expected_response["status_code"], actual_response["status_code"], "status_code")
+            self.validate_value(
+                expected_response["status_code"],
+                actual_response["status_code"],
+                "status_code",
+            )
             # validate headers
-            self.validate_value(expected_response["headers"], actual_response["headers"], "headers")
+            self.validate_value(
+                expected_response["headers"],
+                actual_response["headers"],
+                "headers",
+            )
             # validate body
-            self.validate_value(expected_response["response"]["body"], actual_response["body"], "body")
+            self.validate_value(
+                expected_response["response"]["body"],
+                actual_response["body"],
+                "body",
+            )
 
     def validate_value(self, expected_value, actual_value, key_compare):
         error_message = f"Expected '{expected_value}' but received '{actual_value}'"
@@ -42,9 +72,15 @@ class ValidateResponse:
         LOGGER.debug("Actual '%s': %s", key_compare, actual_value)
         if key_compare == "body":
             if isinstance(actual_value, list):
-                assert self.compare_json_keys(expected_value[0], actual_value[0]), error_message
+                assert self.compare_json_keys(
+                    expected_value[0],
+                    actual_value[0],
+                ), error_message
             else:
-                assert self.compare_json_keys(expected_value, actual_value), error_message
+                assert self.compare_json_keys(
+                    expected_value,
+                    actual_value,
+                ), error_message
         elif key_compare == "headers":
             assert expected_value.items() <= actual_value.items()
         else:
@@ -73,10 +109,10 @@ class ValidateResponse:
                 LOGGER.debug("Key '%s' found in json2", key)
             else:
                 LOGGER.debug("Key '%s' not found in json2", key)
-                return  False
+                return False
         return True
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     val = ValidateResponse()
     val.validate_response()

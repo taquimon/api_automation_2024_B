@@ -36,4 +36,4 @@ Feature: Projects
 
     When I call to "projects" endpoint using "DELETE" option and with parameters
     Then I receive the response and validate with "delete_project" file
-    And I validate the status code is 204
+    And I validate the status code is 201

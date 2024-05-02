@@ -21,7 +21,7 @@ Web services are built using open standards and protocols in order to integrate 
 
 ## SOAP
 
-**SOAP (Simple Object Access Protocol)**  is a messaging protocol specification for exchanging structured information in 
+**SOAP (Simple Object Access Protocol)**  is a messaging protocol specification for exchanging structured information in
 the implementation of web services in computer networks. It uses XML Information Set for its message format, and relies on application layer protocols, most often Hypertext Transfer Protocol (HTTP), although some legacy systems communicate over Simple Mail Transfer Protocol (SMTP), for message negotiation and transmission
 
 ### SOAP Structure
@@ -54,8 +54,8 @@ SOAP-ENV:encodingStyle="http://www.w3.org/2001/12/soap-encoding">
 
 - **SOAP message**. Represents the information being exchanged between 2 SOAP nodes.
 - **SOAP envelope**. It is the enclosing element of an XML message identifying it as a SOAP message.
-- **SOAP header block**. A SOAP header can contain more than one of these blocks, each being a discrete computational block within the header. 
-In general, the SOAP role information is used to target nodes on the path. A header block is said to be targeted at a SOAP node if the SOAP role for the header block is the name of a role in which the SOAP node operates. 
+- **SOAP header block**. A SOAP header can contain more than one of these blocks, each being a discrete computational block within the header.
+In general, the SOAP role information is used to target nodes on the path. A header block is said to be targeted at a SOAP node if the SOAP role for the header block is the name of a role in which the SOAP node operates.
 - **SOAP header**. A collection of one or more header blocks targeted at each SOAP receiver.
 
 **SOAP Header Example**
@@ -79,14 +79,14 @@ In general, the SOAP role information is used to target nodes on the path. A hea
 - **SOAP fault**. In case a SOAP node fails to process a SOAP message, it adds the fault information to the SOAP fault element. This element is contained within the SOAP body as a child element.
 
 
-- SOAP protocol works in combination with **WSDL (Web Service Description Language)** is an special description language for web services. 
+- SOAP protocol works in combination with **WSDL (Web Service Description Language)** is an special description language for web services.
 
 ## REST
 
 **RE**presentational **S**tate **T**ransfer is not based on any protocol but has a standard architecture principle used to send data over standard protocols (HTTP(s)). REST is a web service that is a result of the need of an alternative to the distributed computing based SOAP services.
 
 
-### URI structure 
+### URI structure
 ```commandline
 scheme:[//[user[:password]@]host[:port]][/path][?query][#fragment]
 
@@ -113,7 +113,7 @@ The GET method requests that the target resource transfer a representation of it
 
 **HEAD**
 
-The HEAD method requests that the target resource transfer a representation of its state, as for a GET request, but without the representation data enclosed in the response body. 
+The HEAD method requests that the target resource transfer a representation of its state, as for a GET request, but without the representation data enclosed in the response body.
 
 **POST**
 
@@ -163,18 +163,18 @@ The HTTP response comes with the response code. It informs about the result of t
 | Parameters             | SOAP                                                                                                                                                                                                                                         | REST                                                               |
 |------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
 | Full form              | It stands for Simple Object Access Protocol                                                                                                                                                                                                  | It stands for REpresentational State Transfer.                     |
-| Design                 | It is a standardized protocol for pre-defined rules to follow.                                                                                                                                                                               | It has an architectural style with loose guidelines.               |	
+| Design                 | It is a standardized protocol for pre-defined rules to follow.                                                                                                                                                                               | It has an architectural style with loose guidelines.               |
 | Statefulness           | SOAP is by default stateless, but it is possible to make this API stateful.                                                                                                                                                                  | It is stateful, i.e. no server-side sessions occur.                |
 | Approach	              | It is functional-driven, means that data here is available as services, eg, getUser                                                                                                                                                          | It is data-driven, meaning that data is available as resources.    |
 | Security               | It has WS-security (Enterprise-level security) with SSL support. It also has built-in ACID(Atomicity, Consistency, Integrity, Durability) compliance which is a good feature for transactions and that’s why SOAP is used while exchanging sensitive information. | It supports HTTPS and SSL (Secure Sockets Layer)                   |
-| Caching                | SOAP API calls cannot be cached.                                                                                                                                                                                                             | REST API calls can be cached.                                      |		
-| Performance            | It requires more bandwidth and computing power                                                                                                                                                                                               | It requires less resources, and this makes it more powerful.       |		
+| Caching                | SOAP API calls cannot be cached.                                                                                                                                                                                                             | REST API calls can be cached.                                      |
+| Performance            | It requires more bandwidth and computing power                                                                                                                                                                                               | It requires less resources, and this makes it more powerful.       |
 | Messaging Format       | It only supports XML format.                                                                                                                                                                                                                 | It supports various formats like HTML, XML and JSON.               |
-| Transfer Protocol      | It works on HTTP, SMP, UDP, etc.                                                                                                                                                                                                             | It only works on HTTP(S).                                          |		
-| JAVA API               | JAX-WS is the java API for SOAP web services.                                                                                                                                                                                                | JAX-RS is the java API for REST.                                   |		
-| Usage with one another | SOAP cannot use REST because SOAP is a protocol and REST has an architectural style.                                                                                                                                                         | REST can use SOAP as a protocol for web services.                  |		
-| Exposing methods       | SOAP uses WSDL to expose supported methods and technical details.                                                                                                                                                                            | REST exposes methods through URIs, there are no technical details. |		
-		
+| Transfer Protocol      | It works on HTTP, SMP, UDP, etc.                                                                                                                                                                                                             | It only works on HTTP(S).                                          |
+| JAVA API               | JAX-WS is the java API for SOAP web services.                                                                                                                                                                                                | JAX-RS is the java API for REST.                                   |
+| Usage with one another | SOAP cannot use REST because SOAP is a protocol and REST has an architectural style.                                                                                                                                                         | REST can use SOAP as a protocol for web services.                  |
+| Exposing methods       | SOAP uses WSDL to expose supported methods and technical details.                                                                                                                                                                            | REST exposes methods through URIs, there are no technical details. |
+
 
 ## Authentication
 

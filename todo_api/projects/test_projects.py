@@ -4,11 +4,14 @@
 test_projects.py
     test class to run tests related to projects endpoint
 """
+from __future__ import annotations
+
 import logging
 
 import pytest
 
-from config.config import URL_TODO, MAX_PROJECTS
+from config.config import MAX_PROJECTS
+from config.config import URL_TODO
 from entities.project import Project
 from helpers.rest_client import RestClient
 from helpers.validate_response import ValidateResponse
@@ -21,6 +24,7 @@ class TestProjects:
     """
     Class for projects tests
     """
+
     @classmethod
     def setup_class(cls):
         """
@@ -64,9 +68,13 @@ class TestProjects:
         LOGGER.info("Test create project")
         body_project = {
             "name": "Complete task C#",
-            "color": "orange"
+            "color": "orange",
         }
-        response = self.rest_client.request("post", self.url_todo_projects, body=body_project)
+        response = self.rest_client.request(
+            "post",
+            self.url_todo_projects,
+            body=body_project,
+        )
         if response["status_code"] == 200:
             self.project_list.append(response["body"]["id"])
 
@@ -97,10 +105,14 @@ class TestProjects:
         body_update_project = {
             "name": "Updated project",
             "color": "orange",
-            "is_favorite": True
+            "is_favorite": True,
         }
         # call to endpoint:
-        response = self.rest_client.request("post", url_delete_project, body=body_update_project)
+        response = self.rest_client.request(
+            "post",
+            url_delete_project,
+            body=body_update_project,
+        )
         if response["status_code"] == 200:
             self.project_list.append(response["body"]["id"])
 
@@ -119,7 +131,7 @@ class TestProjects:
         for index in range(number_of_projects, MAX_PROJECTS):
             body_project = {
                 "name": f"Project {index}",
-                "color": "orange"
+                "color": "orange",
             }
 
             response = self.project.create_project(body=body_project)
